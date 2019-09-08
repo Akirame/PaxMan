@@ -33,8 +33,8 @@ public class PacMan : MobileEntity
             currentTileY = nextTileY;
         }
         else
-        {            
-            direction.Normalize();
+        {
+            destinationDirection.Normalize();
             SetPosition((Vector2)transform.position + destinationDirection * distanceToMove);
         }
     }
@@ -63,7 +63,6 @@ public class PacMan : MobileEntity
     {
         int nextTileX = GetCurrentTileX() + (int)newDirection.x;
         int nextTileY = GetCurrentTileY() + (int)newDirection.y;
-
         if(Map.Get().TileIsValid(nextTileX, nextTileY))
         {
             SetNextTile(new Vector2Int(nextTileX, nextTileY));
