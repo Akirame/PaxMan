@@ -18,7 +18,7 @@ public class Entity : MonoBehaviour
 
     public Vector2 GetPosition()
     {
-        return transform.position / 22;
+        return transform.position / Map.Get().tileSize;
     }
 
     public void SetPosition(Vector2 position)
