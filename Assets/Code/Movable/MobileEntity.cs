@@ -43,7 +43,7 @@ public class MobileEntity : Entity
     public void SetNextTile(Vector2Int nextPos)
     {
         nextTileX = nextPos.x;
-        nextTileY = nextPos.y;
+        nextTileY = nextPos.y;        
     }
 
     public int GetCurrentTileX()

@@ -6,6 +6,16 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    public static Map instance;
+    public static Map Get() { return instance; }
+    private void Awake()
+    {
+        if(!instance)
+            instance = this;
+        else
+            Destroy(this.gameObject);
+        InitPathmap();
+    }
     public GameObject SmallDotPrefab;
     public GameObject LargeDotPrefab;
 
@@ -15,14 +25,20 @@ public class Map : MonoBehaviour
     public List<SmallDot> smallDots = new List<SmallDot>();
     public List<BigDot> bigDots = new List<BigDot>();
     public List<PathmapTile> tiles = new List<PathmapTile>();
+    public PathmapTile playerStartPos;
     public List<Cherry> cherry = new List<Cherry>();
+    public int tileSize = 22;
+
+    public GameObject debugNodeOpen;
+    public GameObject debugNodeClosed;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        InitPathmap();
-        InitDots();
-        initBigDots();
+        
+        //InitDots();
+        //initBigDots();
     }
 
     // Update is called once per frame
@@ -41,9 +57,15 @@ public class Map : MonoBehaviour
             {
                 PathmapTile tile = new PathmapTile();
                 tile.posX = x;
-                tile.posY = y;
+                tile.posY = -y;                
                 tile.blocking = line[x] == 'x';
                 tiles.Add(tile);
+                if(line[x] == 's')
+                    playerStartPos = tile;
+                if(tile.blocking)
+                    Instantiate(debugNodeClosed, new Vector2(tile.posX, tile.posY) * tileSize, Quaternion.identity);
+                else
+                    Instantiate(debugNodeOpen, new Vector2(tile.posX, tile.posY) * tileSize, Quaternion.identity);
             }
         }
         return true;
