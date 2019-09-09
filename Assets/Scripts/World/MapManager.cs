@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class Map : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
-    public static Map instance;
-    public static Map Get() { return instance; }
+    public static MapManager instance;
+    public static MapManager Get() { return instance; }
     private void Awake()
     {
         if(!instance)
@@ -26,7 +26,8 @@ public class Map : MonoBehaviour
     public List<SmallDot> smallDots = new List<SmallDot>();
     public List<BigDot> bigDots = new List<BigDot>();
     public List<PathmapTile> tiles = new List<PathmapTile>();
-    public PathmapTile playerStartPos;
+    public Vector2 playerStartPos;
+    public Vector2 ghostStartPos;
     public List<Cherry> cherry = new List<Cherry>();
     public int tileSize = 22;
 
@@ -34,15 +35,7 @@ public class Map : MonoBehaviour
     public GameObject BigDotGroup;
 
     public GameObject debugNodeOpen;
-    public GameObject debugNodeClosed;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {        
-        //InitDots();
-        //initBigDots();
-    }
+    public GameObject debugNodeClosed;    
 
     // Update is called once per frame
     void Update()
@@ -52,7 +45,7 @@ public class Map : MonoBehaviour
 
     public bool InitPathmap()
     {
-        string[] lines = System.IO.File.ReadAllLines("Assets/Data/map.txt");
+        string[] lines = System.IO.File.ReadAllLines("Assets/Data/Map.txt");
         for (int y = 0; y < lines.Length; y++)
         {
             char[] line = lines[y].ToCharArray();
@@ -62,26 +55,33 @@ public class Map : MonoBehaviour
                 tile.posX = x;
                 tile.posY = -y;                                
                 tiles.Add(tile);
-                tile.blocking = line[x] == 'x';
-                if(line[x] == 's')
-                    playerStartPos = tile;
-                else if(line[x] == '.')
+                switch(line[x])
                 {
-                    SmallDot dot = GameObject.Instantiate(SmallDotPrefab).GetComponent<SmallDot>();
-                    dot.transform.SetParent(SmallDotGroup.transform);
-                    dot.SetPosition(new Vector2(x * tileSize , -y * tileSize));
-                    dot.OnCollected += OnDotColleted;
-                    smallDots.Add(dot);
-                    dotCount++;
-                }
-                else if(line[x] == 'o')
-                {
-                    BigDot dot = GameObject.Instantiate(LargeDotPrefab).GetComponent<BigDot>();
-                    dot.transform.SetParent(BigDotGroup.transform);
-                    dot.SetPosition(new Vector2(x * tileSize, -y * tileSize));
-                    dot.OnCollected += OnDotColleted;
-                    bigDots.Add(dot);
-                    dotCount++;
+                    case 'x':
+                        tile.blocking = true;
+                        break;
+                    case 'p':
+                        playerStartPos = new Vector2(tile.posX, tile.posY);
+                        break;
+                    case 'g':
+                        ghostStartPos = new Vector2(tile.posX, tile.posY);
+                        break;
+                    case '.':
+                        SmallDot smallDot = GameObject.Instantiate(SmallDotPrefab).GetComponent<SmallDot>();
+                        smallDot.transform.SetParent(SmallDotGroup.transform);
+                        smallDot.SetPosition(new Vector2(x * MapManager.Get().tileSize, -y * MapManager.Get().tileSize));
+                        smallDot.OnCollected += OnDotColleted;
+                        smallDots.Add(smallDot);
+                        dotCount++;
+                        break;
+                    case 'o':
+                        BigDot bigDot = GameObject.Instantiate(LargeDotPrefab).GetComponent<BigDot>();
+                        bigDot.transform.SetParent(BigDotGroup.transform);
+                        bigDot.SetPosition(new Vector2(x * MapManager.Get().tileSize, -y * MapManager.Get().tileSize));
+                        bigDot.OnCollected += OnDotColleted;
+                        bigDots.Add(bigDot);
+                        dotCount++;
+                        break;
                 }
             }
         }
@@ -186,10 +186,5 @@ public class Map : MonoBehaviour
         Destroy(dot.gameObject);
     }
 
-
-    bool HasIntersectedCherry(Vector2 aPosition)
-    {
-        return true;
-    }
 }
 

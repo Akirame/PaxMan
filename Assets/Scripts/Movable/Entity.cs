@@ -4,21 +4,11 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool alive = false;
 
     public Vector2 GetPosition()
     {
-        return transform.position / Map.Get().tileSize;
+        return transform.position / MapManager.Get().tileSize;
     }
 
     public void SetPosition(Vector2 position)

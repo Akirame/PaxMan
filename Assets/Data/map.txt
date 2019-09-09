@@ -11,7 +11,7 @@ xxxxx.xxxxx xx xxxxx.xxxxx
 xxxxx.xx          xx.xxxxx
 xxxxx.xx xxx  xxx xx.xxxxx
 xxxxx.xx x      x xx.xxxxx
-     .   x      x   .       
+     .   x  g   x   .       
 xxxxx.xx x      x xx.xxxxx
 xxxxx.xx xxxxxxxx xx.xxxxx
 xxxxx.xx          xx.xxxxx
@@ -20,7 +20,7 @@ xxxxx.xx xxxxxxxx xx.xxxxx
 ............xx............
 .xxxx.xxxxx.xx.xxxxx.xxxx.
 .xxxx.xxxxx.xx.xxxxx.xxxx.
-...xx.......s........xx...
+...xx.......p........xx...
 xx.xx.xx.xxxxxxxx.xx.xx.xx
 xx.xx.xx.xxxxxxxx.xx.xx.xx
 ......xx....xx....xx......
