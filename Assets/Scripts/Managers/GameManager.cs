@@ -3,20 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager :MonoBehaviourSingleton<GameManager>
 {
-    public static GameManager instance;
-    public static GameManager Get()
-    {
-        return instance;
-    }
-    private void Awake()
-    {
-        if(!instance)
-            instance = this;
-        else
-            Destroy(this.gameObject);
-    }
     public GameObject PacManPrefab;
     public Transform playerSpawnPoint;
     public PacMan Avatar;
@@ -25,10 +13,11 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
         lives = 3;
         Avatar = GameObject.Instantiate(PacManPrefab).GetComponent<PacMan>();
         Avatar.Respawn(MapManager.Get().playerStartPos);
+        Avatar.OnDeathAnimationFinished += PlayerDeath;
     }
 
     // Update is called once per frame
@@ -45,21 +34,27 @@ public class GameManager : MonoBehaviour
         //    return;
         //}
 
-        
+
     }
 
     private void GameOver()
-    {        
-    }
-
-    private void UpdateLives(int v)
     {
-        lives += v;
+        UIManager.Get().GameOver();
+    }
+    public void Restart()
+    {        
+        UpdateScore(-score);
+    }
+    public void UpdateLives(int v)
+    {
+        lives = v;
+        UIManager.Get().UpdateLives(lives);
     }
 
-    private void UpdateScore(int scoreGain)
+    public void UpdateScore(int scoreGain)
     {
         score += scoreGain;
+        UIManager.Get().UpdateScore(score);
     }
 
     public void HandleInput()
@@ -78,12 +73,14 @@ public class GameManager : MonoBehaviour
     {
         UpdateScore(50);
     }
-    public void PlayerDestroyed()
+    public void PlayerDeath(PacMan p)
     {
         UpdateLives(lives - 1);
         if(lives > 0)
-        {
-            Avatar.Respawn(MapManager.Get().playerStartPos);                        
+        {            
+            Avatar.Respawn(MapManager.Get().playerStartPos);
+            Avatar.Reset();
+            EnemyManager.Get().ResetGhosts();
         }
         else
         {

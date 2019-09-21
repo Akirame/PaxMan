@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BigDot
   - SmallDot
+  - Ghost
   layers:
   - Default
   - TransparentFX

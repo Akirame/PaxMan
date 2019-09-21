@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3787037616449342001}
-  - component: {fileID: 3787037616449342002}
+  - component: {fileID: 251098917366183977}
   - component: {fileID: 4895699298709682236}
   - component: {fileID: 1672867590684913496}
   - component: {fileID: 2858619231852095293}
+  - component: {fileID: 2705278853645518352}
   m_Layer: 0
   m_Name: PacMan
   m_TagString: Player
@@ -39,7 +40,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!212 &3787037616449342002
+--- !u!212 &251098917366183977
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,13 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65bf1db91f85234459b0c9077ab458fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: 0
   currentTileX: 0
   currentTileY: 0
   nextTileX: 0
   nextTileY: 0
-  spawnPoint: {fileID: 0}
   speed: 50
   direction: {x: 1, y: 0}
+  sr: {fileID: 0}
 --- !u!61 &1672867590684913496
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -153,3 +155,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &2705278853645518352
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3787037616449342003}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 559485a12441f3841a34095a084bbc41, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

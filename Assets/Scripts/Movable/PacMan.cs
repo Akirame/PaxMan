@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class PacMan : MobileEntity
 {        
+    public delegate void PacManActionsActions(PacMan p);
+    public PacManActionsActions OnDeathAnimationFinished; 
     public Vector2 direction = new Vector2(1, 0);
+    private Animator animator;
 
     void Start()
     {
         speed = 50.0f;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,5 +63,27 @@ public class PacMan : MobileEntity
                 SetNextTile(new Vector2Int(nextTileX, nextTileY));                
             }
         }
+        animator.SetFloat("DirX", direction.x);
+        animator.SetFloat("DirY", direction.y);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Ghost" && alive)
+        {
+            alive = false;
+            animator.SetFloat("DirX", 0);
+            animator.SetFloat("DirY", 0);
+            animator.SetTrigger("Dead");
+        }
+    }
+    private void OnDeathAnimationFinishedCallback()
+    {
+        OnDeathAnimationFinished(this);
+    }
+    public void Reset()
+    {
+        direction = new Vector2(0, 1);
+        animator.SetFloat("DirX", direction.x);
+        animator.SetFloat("DirY", direction.y);
     }
 }

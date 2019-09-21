@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 7325839173099340688}
   - component: {fileID: 8770722337967143860}
   - component: {fileID: 5508071324394057815}
+  - component: {fileID: 7870989207301342518}
   m_Layer: 0
   m_Name: Ghost
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,12 +98,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0eda6de1df662d4aa915b09871ca498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: 0
   currentTileX: 0
   currentTileY: 0
   nextTileX: 0
   nextTileY: 0
-  isClaimable: 0
-  isDead: 0
-  desiredMovementX: 0
-  desiredMovementY: 0
-  myBehaviour: 0
+  speed: 0
+  isVulnerable: 0
+  direction: {x: 0, y: 0}
+  myBehaviour: {fileID: 0}
+  idleTimer: 3
+  changeDirectionTimer: 2
+  vulnerableTimer: 5
+  normalSprite: {fileID: 0}
+  vulnerableSprite: {fileID: 21300000, guid: ed1e023394dcbbc4ebcec131cb31e8c0, type: 3}
+--- !u!70 &7870989207301342518
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4519282131420516549}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 22.61, y: 32}
+  m_Direction: 0

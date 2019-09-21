@@ -2,44 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviourSingleton<EnemyManager>
 {
-    public GameObject GhostPrefab;
-    public List<Ghost> Ghosts;
+    public GameObject ghostPrefab;
+    public List<Ghost> ghosts;
+    public Sprite[] ghostSprites;
     public float myGhostGhostCounter;
-
+    public int maxGhost;
     // Start is called before the first frame update
     void Start()
     {
-        Ghosts = new List<Ghost>();
-        for(int g = 0; g < 1; g++)
+        maxGhost = ghostSprites.Length;
+        ghosts = new List<Ghost>();
+        for(int g = 0; g < maxGhost; g++)
         {
-            Ghosts.Add(GameObject.Instantiate(GhostPrefab).GetComponent<Ghost>());
-            Ghosts[g].Respawn(MapManager.Get().ghostStartPos);
-            Ghosts[g].transform.SetParent(this.transform);
+            ghosts.Add(GameObject.Instantiate(ghostPrefab).GetComponent<Ghost>());
+            ghosts[g].Respawn(MapManager.Get().ghostStartPos);
+            ghosts[g].transform.SetParent(this.transform);
+            ghosts[g].normalSprite = ghostSprites[g];
+            ghosts[g].onCollisionWithPlayer += GhostDestroyed;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int g = 0; g < Ghosts.Count; g++)
+        for (int g = 0; g < ghosts.Count; g++)
         {
-            Ghosts[g].OnUpdate(MapManager.Get(), GameManager.Get().GetPlayer());
+            ghosts[g].OnUpdate(MapManager.Get(), GameManager.Get().GetPlayer());
         }
     }
-    void HandleEnemyCollisionWithPlayer(Ghost g)
+    void GhostDestroyed(Ghost g)
     {
-        if(!g.isVulnerable)
+         GameManager.Get().GhostDestroyed();
+    }
+    public void SetEnemiesVulnerables()
+    {
+        for(int g = 0; g < ghosts.Count; g++)
         {
-            GameManager.Get().PlayerDestroyed();
-            g.Respawn(MapManager.Get().ghostStartPos);
+            ghosts[g].isVulnerable = true;
+            ghosts[g].SetVulnerable();
         }
-        else
-        {
-            GameManager.Get().GhostDestroyed();
-            g.Respawn(MapManager.Get().ghostStartPos);
-            g.alive = false;
+    }
+    public void ResetGhosts()
+    {
+        for(int g = 0; g < maxGhost; g++)
+        {            
+            ghosts[g].Respawn(MapManager.Get().ghostStartPos);
+            ghosts[g].Reset();
         }
     }
 }

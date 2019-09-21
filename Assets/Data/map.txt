@@ -8,7 +8,7 @@ oxxxx.xxxxx.xx.xxxxx.xxxxo
 ......xx....xx....xx......
 xxxxx.xxxxx xx xxxxx.xxxxx
 xxxxx.xxxxx xx xxxxx.xxxxx
-xxxxx.xx          xx.xxxxx
+xxxxx.xx    G     xx.xxxxx
 xxxxx.xx xxx  xxx xx.xxxxx
 xxxxx.xx x      x xx.xxxxx
      .   x  g   x   .       

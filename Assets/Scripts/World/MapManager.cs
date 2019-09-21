@@ -4,38 +4,32 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviourSingleton<MapManager>
 {
-    public static MapManager instance;
-    public static MapManager Get() { return instance; }
-    private void Awake()
+    protected override void Awake()
     {
-        if(!instance)
-            instance = this;
-        else
-            Destroy(this.gameObject);
-
+        base.Awake();
         InitPathmap();
     }
+    public int tileSize = 22;
+
     public GameObject SmallDotPrefab;
     public GameObject LargeDotPrefab;
 
     public int dotCount = 0;
-    public int DotCount { get { return dotCount; } }
+    public int DotCount;
 
     public List<SmallDot> smallDots = new List<SmallDot>();
     public List<BigDot> bigDots = new List<BigDot>();
     public List<PathmapTile> tiles = new List<PathmapTile>();
-    public Vector2 playerStartPos;
-    public Vector2 ghostStartPos;
-    public List<Cherry> cherry = new List<Cherry>();
-    public int tileSize = 22;
+    public List<Cherry> cherry = new List<Cherry>();    
 
     public GameObject SmallDotGroup;
     public GameObject BigDotGroup;
 
-    public GameObject debugNodeOpen;
-    public GameObject debugNodeClosed;    
+    public Vector2 playerStartPos;
+    public Vector2 ghostStartPos;
+    public Vector2Int ghostExitPos;
 
     // Update is called once per frame
     void Update()
@@ -65,6 +59,9 @@ public class MapManager : MonoBehaviour
                         break;
                     case 'g':
                         ghostStartPos = new Vector2(tile.posX, tile.posY);
+                        break;
+                    case 'G':
+                        ghostExitPos = new Vector2Int(tile.posX, tile.posY);
                         break;
                     case '.':
                         SmallDot smallDot = GameObject.Instantiate(SmallDotPrefab).GetComponent<SmallDot>();
@@ -175,12 +172,15 @@ public class MapManager : MonoBehaviour
     {
         if(dot.tag == "SmallDot")
         {
-            smallDots.Remove((SmallDot)dot);            
+            smallDots.Remove((SmallDot)dot);
+            GameManager.Get().UpdateScore(dot.points);
         }
         else if(dot.tag == "BigDot")
         {
             bigDots.Remove((BigDot)dot);
-        }        
+            EnemyManager.Get().SetEnemiesVulnerables();
+            GameManager.Get().UpdateScore(dot.points);            
+        }
         dot.OnCollected -= OnDotColleted;
         dotCount--;
         Destroy(dot.gameObject);

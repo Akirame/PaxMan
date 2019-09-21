@@ -62,4 +62,8 @@ public class FSM
     {
         currentState = initialState;
     }
+    public void ResetState()
+    {
+        currentState = fsm[0, 0];
+    }
 }
