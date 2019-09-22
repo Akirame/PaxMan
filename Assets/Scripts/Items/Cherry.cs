@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Cherry : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public ItemActions OnTimerRunOut;
+    private float timer = 0f;
+    public float lifeTime = 5f;
+
+    private void Start()
     {
-        
+        points = 100;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if(timer >= lifeTime)
+        {
+            timer = 0f;
+            OnTimerRunOut(this);            
+        }
+        else
+            timer += Time.deltaTime;
     }
 }

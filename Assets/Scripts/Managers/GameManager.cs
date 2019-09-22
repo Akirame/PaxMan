@@ -8,13 +8,16 @@ public class GameManager :MonoBehaviourSingleton<GameManager>
     public GameObject PacManPrefab;
     public Transform playerSpawnPoint;
     public PacMan Avatar;
+    public int maxLives = 3;
     public int lives;
     public int score;
+    float timeScale;
 
     // Start is called before the first frame update
     void Start()
     {
-        lives = 3;
+        timeScale = Time.timeScale;
+        lives = maxLives;
         Avatar = GameObject.Instantiate(PacManPrefab).GetComponent<PacMan>();
         Avatar.Respawn(MapManager.Get().playerStartPos);
         Avatar.OnDeathAnimationFinished += PlayerDeath;
@@ -24,26 +27,6 @@ public class GameManager :MonoBehaviourSingleton<GameManager>
     void Update()
     {
         HandleInput();
-
-        //if (MapManager.DotCount == 0)
-        //{
-        //    return;
-        //}
-        //else if (lives <= 0)
-        //{
-        //    return;
-        //}
-
-
-    }
-
-    private void GameOver()
-    {
-        UIManager.Get().GameOver();
-    }
-    public void Restart()
-    {        
-        UpdateScore(-score);
     }
     public void UpdateLives(int v)
     {
@@ -84,8 +67,34 @@ public class GameManager :MonoBehaviourSingleton<GameManager>
         }
         else
         {
+            PauseGame(true);
             GameOver();
             return;
         }
+    }
+    public void PauseGame(bool val)
+    {
+        Time.timeScale = val ? 0 : timeScale;
+    }
+    public void Win()
+    {
+        PauseGame(true);
+        UIManager.Get().ActivatePostGame(true);
+    }
+    private void GameOver()
+    {
+        PauseGame(true);
+        UIManager.Get().ActivatePostGame(false);
+    }
+    public void Restart()
+    {
+        PauseGame(false);
+        UpdateScore(-score);
+        UpdateLives(maxLives);
+        MapManager.Get().ResetMap();
+        Avatar.Respawn(MapManager.Get().playerStartPos);
+        Avatar.Reset();
+        EnemyManager.Get().ResetGhosts();
+        
     }
 }

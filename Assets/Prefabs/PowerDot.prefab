@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6919637774359696777}
   - component: {fileID: 728338204917215195}
   m_Layer: 0
-  m_Name: BigDot
-  m_TagString: BigDot
+  m_Name: PowerDot
+  m_TagString: PowerDot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886fb2cfe80006448b7ee36dd8ec4d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: 0
   points: 0
 --- !u!61 &6919637774359696777
 BoxCollider2D:

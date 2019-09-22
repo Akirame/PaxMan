@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviourSingleton<UIManager>
+public class UIManager :MonoBehaviourSingleton<UIManager>
 {
-    public GameObject UIGameOver;
+    public GameObject UIPostGame;
     public GameObject UIGameplay;
-    public Text PointsText;
+    public Text pointsText;
+    public Text postGameText;
     public Image[] livesImages;
 
     public void UpdateScore(int points)
     {
-        PointsText.text = "Points: " + points;
+        pointsText.text = "Points: " + points;
     }
-    public void GameOver()
+    public void ActivatePostGame(bool win)
     {
-        UIGameOver.SetActive(true);        
+        if(win)
+            postGameText.text = win ? "WINNER" : "GAMEOVER";
+        UIPostGame.SetActive(true);
     }
     public void ResetUI()
     {
-        UIGameOver.SetActive(false);
+        UIPostGame.SetActive(false);
     }
     public void UpdateLives(int lives)
     {
@@ -28,5 +31,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             liveUI.color = new Color(0, 0, 0, 0);
         for(int i = 0; i < lives; i++)
             livesImages[i].color = Color.white;
+    }
+    public void RestartButtonPressed()
+    {
+        ResetUI();
+        GameManager.Get().Restart();
+    }
+    public void ExitButtonPressed()
+    {
+        Application.Quit();
     }
 }
